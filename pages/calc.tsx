@@ -44,7 +44,7 @@ function buildup(sj: JSON) {
       xhr.responseType = "json";
       xhr.open(
         "POST",
-        "https://localhost:44349/api/upload/biz/single/" + bizId + "/" + orderId
+        "https://localhost:5006/api/upload/calc/single/" + bizId + "/" + orderId
       );
       xhr.onload = () => {
         if (xhr.readyState === xhr.DONE) {
