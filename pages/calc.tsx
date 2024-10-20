@@ -11,13 +11,14 @@ import { useState, useEffect } from "react";
 import { describe } from "node:test";
 
 const survey = new Model("");
-const bizId = "112";
+const businessId = "112";
 const orderId = "127";
+const jwToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkRldlBDMSIsInN1YiI6IkRldlBDMSIsImp0aSI6IjNmMjc0NTUzIiwiYXVkIjpbImh0dHA6Ly9sb2NhbGhvc3Q6MzkwMDAiLCJodHRwczovL2xvY2FsaG9zdDo0NDM0OSIsImh0dHBzOi8vbG9jYWxob3N0OjUwMDYiLCJodHRwOi8vbG9jYWxob3N0OjUwMDUiXSwibmJmIjoxNzI5MzUzODk5LCJleHAiOjE3MzczMDI2OTksImlhdCI6MTcyOTM1MzkwMCwiaXNzIjoiZG90bmV0LXVzZXItand0cyJ9.ytqDAdJHG5J8UyY8-OPHtFljnXn9FvSzQcDuzn9KMFw";
 function Calc() {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    getInitialBizFormData("https://localhost:5006/api/dyna/", bizId);
+    getInitialBusinessFormData("https://localhost:5006/api/businessform/",businessId);
   }, []);
 
   useEffect(() => {
@@ -38,14 +39,16 @@ function buildup(sj: JSON) {
   survey.onUploadFiles.add(function (survey, options) {
     options.files.forEach((file) => {
       var formData = new FormData();
-      formData.append("postId", "cbd4f8b2-f9df-4eb0-99f7-2dcc61a41d03");
       formData.append("file", file);
+      formData.append("BizId", businessId);
+      formData.append("OrderId", orderId);
       var xhr = new XMLHttpRequest();
       xhr.responseType = "json";
       xhr.open(
         "POST",
-        "https://localhost:5006/api/upload/calc/single/" + bizId + "/" + orderId
+        "https://localhost:5006/api/upload/businessform/single"
       );
+      xhr.setRequestHeader('Authorization', jwToken);
       xhr.onload = () => {
         if (xhr.readyState === xhr.DONE) {
           if (xhr.status === 200) {
@@ -120,13 +123,13 @@ function onChangeHandler(survey, sender, options) {
   //var results1 = POST('https://localhost:5006/api/dyna/', survey, sender.data)
   //console.log(JSON.stringify(sender.data));
   var results1 = POST(
-    "https://localhost:5006/api/dyna/",
+    "https://localhost:5006/api/businessform/",
     survey,
     buildJson(survey, "112")
   );
 }
-function buildJson(survey: Model, bizid: string) {
-  let json = '[{"bizid":{"val":"' + bizid + '"}';
+function buildJson(survey: Model, businessId: string) {
+  let json = '[{"bizid":{"val":"' + businessId + '"}';
   survey.getAllQuestions(false).forEach((q) => {
     json = json + ',"' + q.name + '":{"val":"' + q.value + '"}';
   });
@@ -167,8 +170,8 @@ export async function POST(url: RequestInfo | URL, sur: Model, json: any) {
   return JSON.stringify(response);
 }
 
-async function getInitialBizFormData_Mock(url: RequestInfo | URL, bizId: any) {
-  console.log(url + bizId);
+async function getInitialBizFormData_Mock(url: RequestInfo | URL, businessId: any) {
+  console.log(url + businessId);
   var responseJson = mockInitializer;
   try {
     // var responseJson = JSON.parse(response);
@@ -186,10 +189,10 @@ async function getInitialBizFormData_Mock(url: RequestInfo | URL, bizId: any) {
   }
 }
 
-async function getInitialBizFormData(url: RequestInfo | URL, bizId: any) {
-  console.log(url + bizId);
+async function getInitialBusinessFormData(url: RequestInfo | URL, businessId: any) {
+  console.log(url + businessId);
   //   debugger;
-  var response = await fetch(url + bizId, {
+  var response = await fetch(url + businessId, {
     method: "GET",
     mode: "cors",
     credentials: "include",
@@ -247,8 +250,8 @@ async function getCalculatedBizFormData(
     });
 }
 
-function bizCreatJson(bizid: string) {
-  let json = '[{"bizjson":{"val":"' + bizid + '"}}]';
+function businessCreatJson(businessId: string) {
+  let json = '[{"businessjson":{"val":"' + businessId + '"}}]';
   //console.log(json);
 
   return json;
