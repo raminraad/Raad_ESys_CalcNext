@@ -50,7 +50,7 @@ function buildup(sj: JSON) {
             var xhr = new XMLHttpRequest();
             xhr.responseType = "json";
             xhr.open("POST", fileURL);
-            xhr.setRequestHeader("Authorization", jwToken);
+            xhr.setRequestHeader("Authorization", `Bearer ${jwToken}`);
             xhr.onload = () => {
                 if (xhr.readyState === xhr.DONE) {
                     if (xhr.status === 200) {
