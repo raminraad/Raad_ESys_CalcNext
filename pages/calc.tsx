@@ -14,6 +14,7 @@ const survey = new Model("");
 const businessId = "100001";
 const initURL = "https://localhost:5006/api/business/initialize/";
 const calcURL = "https://localhost:5006/api/business/calculate/";
+const submitURL = "https://localhost:5006/api/business/submit/";
 const fileURL = "https://localhost:5006/api/upload/businessform/single/";
 const filePath = "https://api.surveyjs.io/public/v1/Survey/file?filePath=";
 const tempRoute = "b1d8de61-fd4a-45ba-a998-01e74a4c6054";
@@ -129,6 +130,14 @@ function onChangeHandler(survey: Model, sender: Model) {
     var results1 = POST(calcURL, survey, buildJson(survey, businessId));
 }
 
+
+
+function onFormSubmit(survey: Model, sender: Model) {
+    var results1 = POST(submitURL, survey, buildJson(survey, businessId));
+}
+
+
+
 function buildJson(survey: Model, businessId: string) {
     let json = '[{"bizid":{"val":"' + businessId + '"}';
     survey.getAllQuestions(false).forEach((q) => {
@@ -181,11 +190,7 @@ export async function POST(url: RequestInfo | URL, sur: Model, json: any) {
     });
     if (!response.ok) return null;
 
-    var responseJson = await response.json();
-    //   const myJSON = JSON.stringify(response);
-    //   console.log(myJSON);
-    //   var pJson = JSON.parse(myJSON);
-    var results = JSON.parse(responseJson["result"]);
+    var results = JSON.parse(await response.json());
 
     debugger;
     for (var item in results[0]) {
