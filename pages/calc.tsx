@@ -17,7 +17,7 @@ const calcURL = "https://localhost:5006/api/business/calculate/";
 const fileURL = "https://localhost:5006/api/upload/businessform/single/";
 const filePath = "https://api.surveyjs.io/public/v1/Survey/file?filePath=";
 const tempRoute = "b1d8de61-fd4a-45ba-a998-01e74a4c6054";
-const jwToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJjbGllbnQtbmFtZSIsInJvbGUiOiJjbGllbnQiLCJqdGkiOiJjMTM4MTVjZC1hZTQ5LTQ1ZDktYTc4My0zN2RmNGM0Mjc4NzgiLCJzdWIiOiJjbGllbnQtbmFtZSIsIm5iZiI6MTcyOTY4MTkyMiwiZXhwIjoxNzI5Njg5MTIyLCJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSJ9.5w910G2VvhFoxpYBQ8UKiL_iRWIPskKStr0MgxsStTU";
+const jwToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJjbGllbnQtbmFtZSIsInJvbGUiOiJjbGllbnQiLCJqdGkiOiIzYmYyMmQ2MS04YjJmLTQxMjEtOTA3YS01NDMxYjQzMTIwOWMiLCJzdWIiOiJjbGllbnQtbmFtZSIsIm5iZiI6MTcyOTY4OTQ5MywiZXhwIjoxNzI5Njk2NjkzLCJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSJ9.BcgHRtoj3QhNq5DzLMzkl_s3STKo89KsjBBtRcOvzo4";
 
 function Calc() {
     const [hasMounted, setHasMounted] = useState(false);
@@ -174,6 +174,7 @@ export async function POST(url: RequestInfo | URL, sur: Model, json: any) {
         mode: "cors",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${jwToken}`
         },
         body: json,
         redirect: "follow",
@@ -275,6 +276,7 @@ async function getCalculatedBizFormData(
     currentJson: any
 ) {
     console.log(url + JSON.stringify({json: currentJson}));
+    debugger;
     const res = await fetch(url + currentJson, {
         method: "POST",
         headers: {
